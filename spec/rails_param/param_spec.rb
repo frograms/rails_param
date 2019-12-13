@@ -106,6 +106,12 @@ describe RailsParam::Param do
           allow(controller).to receive(:params).and_return({ "foo" => true })
           expect { controller.param! :foo, Integer }.to raise_error(RailsParam::Param::InvalidParameterError)
         end
+
+        it "will regard empty string as nil" do
+          allow(controller).to receive(:params).and_return({ "foo" => "" })
+          controller.param! :foo, Integer
+          expect(controller.params["foo"]).to be_nil
+        end
       end
 
       describe "Float" do
@@ -123,6 +129,12 @@ describe RailsParam::Param do
         it "will raise InvalidParameterError if the value is a boolean" do
           allow(controller).to receive(:params).and_return({ "foo" => true })
           expect { controller.param! :foo, Float }.to raise_error(RailsParam::Param::InvalidParameterError)
+        end
+
+        it "will regard empty string as nil" do
+          allow(controller).to receive(:params).and_return({ "foo" => "" })
+          controller.param! :foo, Float
+          expect(controller.params["foo"]).to be_nil
         end
       end
 
